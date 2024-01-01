@@ -1,0 +1,32 @@
+.custom-table {
+    border-radius: 10px; /* Ajustez cette valeur pour contrôler à quel point les coins sont arrondis */
+    overflow: hidden; /* Cela est nécessaire pour que border-radius s'applique aux lignes du tableau */
+}
+
+.custom-table th {
+    background-color: #2166BC !important; /* Couleur de fond des cellules du titre */
+    color: #fff !important;
+}
+.patients-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 50px;
+    width: 50vw;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.button-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    margin-top: 50px;
+    align-self: flex-end;
+}
+.button-container button {
+    margin-left: 10px;
+    margin-right: 10px;
+}
