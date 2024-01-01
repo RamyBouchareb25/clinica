@@ -20,8 +20,9 @@ This project represents an advanced management system tailored for a surgical cl
   - Django as the server
   - Python as the language used
   - SQLite as the database
-  
-  <img src="https://www.djangoproject.com/m/img/logos/django-logo-negative.png" alt="django" width="10%"><img src="https://sqlite.org/forum/logo?id=603c155e" alt="sqlite" width="10%"> <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Python-logo-notext.svg/1869px-Python-logo-notext.svg.png" alt="Python" width="10%">
+  - Railway to deploy the django app
+    
+  <img src="https://www.djangoproject.com/m/img/logos/django-logo-negative.png" alt="django" width="10%"><img src="https://sqlite.org/forum/logo?id=603c155e" alt="sqlite" width="10%"> <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Python-logo-notext.svg/1869px-Python-logo-notext.svg.png" alt="Python" width="10%"> <img src="https://railway.app/brand/logo-dark.svg" alt="railway" width="10%">
   
 
 ## Getting Started
