@@ -83,10 +83,11 @@ These instructions will get you a copy of the project up and running on your loc
 
 9. Run the backend server:
    ```bash
+   cd backend
    python manage.py runserver
    ```
 
-10. Open your browser and go to `http://localhost:3000` to view the app.
+10. Open your browser and go to `http://localhost:8080` to view the app.
 
 ## Usage
 
