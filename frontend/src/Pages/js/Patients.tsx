@@ -36,6 +36,7 @@ useEffect(()    => {
 }, [])
   return (
     <div className='patients-container'>
+      <h2>Patients List :</h2>
       <Tableau editingIndex={editingIndex} setEditingIndex={setEditingIndex} setEditingPatient={setEditingPatient} patients={patients} setPatients={setPatients}/>
       <div className='button-container'>
         <Button variant="outline-primary" onClick={() => editPatient(editingPatient)}>Submit</Button>
@@ -45,7 +46,7 @@ useEffect(()    => {
             setEditingPatient([])
             }}>Cancel</Button>
       </div>
-
+      
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
           <Modal.Title>Modal heading</Modal.Title>
