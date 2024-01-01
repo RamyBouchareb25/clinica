@@ -24,7 +24,7 @@ export default function Patients() {
 }
 const getPatients = async () => {
   const list:Patient[] = [];
-  const response = await axios.get('http://localhost:8000/api/patients/');
+  const response = await axios.get('https://django-production-70ce.up.railway.app/api/patients/');
   response.data.forEach((patient: unknown) => {
       list.push(Patient.fromJson(patient));
   });
