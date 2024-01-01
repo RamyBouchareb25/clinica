@@ -1,4 +1,4 @@
-import LoginButton from '../../components/js/LoginButton'
+import LoginButton from '../../components/ts/LoginButton'
 
 export default function Login() {
   return (

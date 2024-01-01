@@ -1,10 +1,12 @@
 import { useAuth0 } from '@auth0/auth0-react';
 import './App.css'
-import Pages from './components/js/Pages';
-import Sidebar from './components/js/SideBar' 
+import Pages from './components/ts/Pages';
+import Sidebar from './components/ts/SideBar' 
 import { BrowserRouter as Router } from 'react-router-dom';
-import Login from './Pages/js/Login';
-import Loading from './Pages/js/Loading';
+import Login from './Pages/ts/Login';
+import Loading from './Pages/ts/Loading';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 function App() {
@@ -18,6 +20,20 @@ function App() {
         {isAuthenticated ? <Pages /> : isLoading ? <Loading /> : <Login />}
       </div>
     </Router>
+    <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+        />
+          {/* Same as */}
+      <ToastContainer />
     </>
   )
 }

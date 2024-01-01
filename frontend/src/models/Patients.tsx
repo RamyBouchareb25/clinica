@@ -8,6 +8,7 @@ export class Patient {
     numTel: string;
     email: string;
     age: number;
+    [key: string]: string | number | Date | Sexe;
     constructor(id: number, nom: string, prenom: string, dateNaissance: Date, sexe: Sexe, adresse: string, numTel: string, email: string) {
         this.id = id;
         this.nom = nom;
@@ -41,14 +42,23 @@ export class Patient {
             throw new Error("Invalid JSON structure for Patient");
         }
     }
+    static enumToNumber = (sexe: Sexe): number => {
+        switch (sexe) {
+            case Sexe.Homme:
+                return 1;
+            case Sexe.Femme:
+                return 2;
+            default:
+                throw new Error("Invalid Sexe");
+        }
+    }
     static toJson(patient: Patient): unknown {
         return {
-            ID_Patient: patient.id,
             Nom: patient.nom,
             Prenom: patient.prenom,
-            DateNaissance: patient.dateNaissance.toISOString(),
-            sexe: patient.sexe,
+            sexe: this.enumToNumber(patient.sexe),
             Adresse: patient.adresse,
+            DateNaissance: patient.dateNaissance.toISOString().split('T')[0],
             num_tel: patient.numTel,
             email: patient.email
         };
@@ -77,7 +87,7 @@ interface PatientJson {
     num_tel: string;
     email: string;
 }
-enum Sexe {
+export enum Sexe {
     Homme = "Homme",
     Femme = "Femme"
 }

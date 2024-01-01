@@ -1,11 +1,13 @@
 
-import Tableau from '../../components/js/Tableau';
+import Tableau from '../../components/ts/Tableau';
 import { useEffect, useState } from 'react';
 import { Patient } from '../../models/Patients';
 import { Button, Modal } from 'react-bootstrap';
 import axios from 'axios'
+import { toast } from 'react-toastify';
 export default function Patients() {
-  const [editingIndex, setEditingIndex] = useState(-1);
+  const [editingIndexRow, setEditingIndexRow] = useState(-1);
+  const [editingIndexColumn, setEditingIndexColumn] = useState(-1);
   const [editingPatient, setEditingPatient] = useState<Patient[]>([]);
   const [patients, setPatients] = useState<Patient[]>([]);
 
@@ -15,11 +17,26 @@ export default function Patients() {
   const handleShow = () => setShow(true);
 
   const editPatient = async (patients: Patient[]) => {
-    patients.forEach(async (pat) => {
-        const response = await axios.patch(`http://localhost:8000/api/patients/${pat.id}/`, {Nom: pat.nom});
-        console.log(response.data,response.status)
+    
+    const promises = patients.map((patient) => {
+      return axios.put('http://localhost:8000/api/patients/'+ patient.id +'/', Patient.toJson(patient));
     });
-   
+    toast.promise(Promise.all(promises), {
+      pending: 'Modification en cours...',
+      success: {
+        render({ data }) {
+          console.log(data)
+          return `Modification effectuée avec succès !`;
+        }
+      },
+      error: {
+        render({ data }) {
+          console.log(data)
+          return `Erreur lors de la modification du patient !`;
+        }
+      }
+    });
+    await Promise.all(promises);
     await getPatients();
 }
 const getPatients = async () => {
@@ -37,16 +54,20 @@ useEffect(()    => {
   return (
     <div className='patients-container'>
       <h2>Patients List :</h2>
-      <Tableau editingIndex={editingIndex} setEditingIndex={setEditingIndex} setEditingPatient={setEditingPatient} patients={patients} setPatients={setPatients}/>
+      <Tableau editingIndexRow={editingIndexRow} editingIndexColumn={editingIndexColumn} setEditingIndexColumn={setEditingIndexColumn} setEditingIndexRow={setEditingIndexRow} setEditingPatient={setEditingPatient} patients={patients} setPatients={setPatients}/>
       <div className='button-container'>
         <Button variant="outline-primary" onClick={() => editPatient(editingPatient)}>Submit</Button>
         <Button variant="outline-primary" onClick={async() => {
             await getPatients()
-            setEditingIndex(-1)
+            setEditingIndexRow(-1)
+            setEditingIndexColumn(-1)
             setEditingPatient([])
             }}>Cancel</Button>
       </div>
       
+
+      
+
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
           <Modal.Title>Modal heading</Modal.Title>

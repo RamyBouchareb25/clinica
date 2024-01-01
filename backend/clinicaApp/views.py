@@ -11,6 +11,8 @@ from django.conf import settings
 from django.shortcuts import redirect, render
 from django.urls import reverse
 from urllib.parse import quote_plus, urlencode
+from django.views.decorators.csrf import csrf_exempt
+
 oauth = OAuth()
 
 oauth.register(

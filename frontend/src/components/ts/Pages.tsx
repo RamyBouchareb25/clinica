@@ -1,7 +1,7 @@
 import {Routes, Route,useLocation} from 'react-router-dom';
-import Home from '../../Pages/js/Home';
-import Patients from '../../Pages/js/Patients';
-import Logout from '../../Pages/js/Logout';
+import Home from '../../Pages/ts/Home';
+import Patients from '../../Pages/ts/Patients';
+import Logout from '../../Pages/ts/Logout';
 
 export default function Pages() {
 const location = useLocation();

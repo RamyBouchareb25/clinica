@@ -29,7 +29,7 @@ SECRET_KEY = "django-insecure-3mi(8kcx+fliqoz2uq37)3)vwmh_0*++ka+5c0ay_58#z%6yk!
 # SECURITY WARNING: don't run with debug turned on in production!
 # DEBUG = os.getenv("DEBUG", "False") == "True"
 DEBUG = True
-ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS", "127.0.0.1,localhost").split(",")
+ALLOWED_HOSTS = ['django-production-70ce.up.railway.app', 'localhost', '127.0.0.1'] 
 
 
 # DEVELOPMENT_MODE = os.getenv("DEVELOPMENT_MODE", "False") == "True"
@@ -48,6 +48,8 @@ ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS", "127.0.0.1,localhost").split("
 #     DATABASES = {
 #         "default": dj_database_url.parse(os.environ.get("DATABASE_URL")),
 #     }
+
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -61,28 +63,34 @@ INSTALLED_APPS = [
     'rest_framework',
     'clinicaApp'
 ]
-
+CORS_ORIGIN_ALLOW_ALL = True
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
+    'clinicaApp.middleware.DisableCSRFMiddleware', 
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
 ]
 
 CORS_ORIGIN_WHITELIST = [
-     'http://localhost:8080'
+    'https://django-production-70ce.up.railway.app',
+    "http://localhost:8000",
+    "http://127.0.0.1:8000",
+    "http://127.0.0.1:8080"
 ]
-
 ROOT_URLCONF = 'clinica.urls'
+
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ["C:/Users/Ramy/Desktop/django/Projet/clinica/backend/clinicaApp/template"],
+        'DIRS': ["../backend/clinicaApp/template"],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -159,5 +167,10 @@ if ENV_FILE:
 AUTH0_DOMAIN = os.environ.get("AUTH0_DOMAIN")
 AUTH0_CLIENT_ID = os.environ.get("AUTH0_CLIENT_ID")
 AUTH0_CLIENT_SECRET = os.environ.get("AUTH0_CLIENT_SECRET")
-# STATIC_URL = "/static/"
-# STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+
+#For deploying 
+STATIC_URL = "static/"
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "static")
+]
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
