@@ -1,5 +1,8 @@
 from django.db import models
 from django_enumfield import enum
+from django.utils import timezone
+from dateutil.relativedelta import relativedelta
+from datetime import datetime
 
 # Create your models here.
 class sexe(enum.Enum):
@@ -22,7 +25,11 @@ class Patient(models.Model):
     Adresse = models.CharField(max_length=(50))
     num_tel = models.IntegerField(default=0)
     email = models.EmailField(default="test@domain.com")
-
+    @property
+    def age(self):
+        date_naissance_datetime = datetime.combine(self.DateNaissance, datetime.min.time())
+        date_naissance_aware = timezone.make_aware(date_naissance_datetime)
+        return relativedelta(timezone.now(), date_naissance_aware).years
 class Medecin(models.Model):
     ID_Medecin = models.AutoField(primary_key=True)
     Nom = models.CharField(max_length=(50))

@@ -13,7 +13,7 @@
     align-items: center;
     justify-content: center;
     margin-top: 50px;
-    width: 50vw;
+    width: 66vw;
     margin-left: auto;
     margin-right: auto;
 }
@@ -29,4 +29,17 @@
 .button-container button {
     margin-left: 10px;
     margin-right: 10px;
+}
+table {
+    overflow: visible;
+}
+
+.table-row td {
+    transition: transform 0.3s ease;
+    transform-origin: center center;
+}
+
+.table-row:hover td {
+    transform: scale(1.05); /* Ajustez cette valeur selon vos préférences */
+    cursor: pointer;
 }
