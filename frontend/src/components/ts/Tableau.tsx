@@ -1,5 +1,5 @@
 import { Patient } from "../../models/Patients";
-import { Button, Form, Tab } from "react-bootstrap";
+import { Form, Tab } from "react-bootstrap";
 import { FaTimes } from 'react-icons/fa';
 import "../scss/tableau.scss";
 import "react-datepicker/dist/react-datepicker.css";
