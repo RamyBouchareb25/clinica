@@ -1,5 +1,5 @@
 
-# Project Name
+# Clinca
 
 
 This project represents an advanced management system tailored for a surgical clinic with specialized focus on enhancing operational efficiency. Boasting a sophisticated architecture, the system caters to the needs of five distinct departments within the clinic: cardiology, neurology, urology, rheumatology, and ENT (Ear, Nose, and Throat). Seamlessly integrating patient appointment scheduling, meticulous medical record management, and tailored workflows for each department, this comprehensive solution is designed to elevate the clinic's overall functionality and provide a seamless experience for both healthcare providers and patients.
