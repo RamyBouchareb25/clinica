@@ -21,7 +21,7 @@ from clinicaApp import views
 
 router = routers.DefaultRouter()
 router.register(r'patients', views.PatientView, 'paitent')
-# router.register(r'medecins', views.MedecinView, 'medecin')
+router.register(r'Doctors', views.DoctorView, 'Doctors')
 
 
 urlpatterns = [

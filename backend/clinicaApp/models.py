@@ -34,11 +34,11 @@ class Medecin(models.Model):
     ID_Medecin = models.AutoField(primary_key=True)
     Nom = models.CharField(max_length=(50))
     Prenom = models.CharField(max_length=(50))
-    DateNaissance = models.DateField
-    sexe = models.CharField(max_length=(50))
+    DateNaissance = models.DateField(default='2000-01-01')
+    sexe = enum.EnumField(sexe)
     Adresse = models.CharField(max_length=(50))
-    num_tel = models.IntegerField
-    email = models.EmailField
+    num_tel = models.IntegerField()
+    email = models.EmailField()
     specialite = enum.EnumField(Specialite)
 
 class Rendez_Vous(models.Model):

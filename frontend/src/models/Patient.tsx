@@ -25,38 +25,21 @@ export class Patient {
         const age = new Date(diff);
         return Math.abs(age.getUTCFullYear() - 1970);
     }
-    static numberToSexe = (n: number): Sexe => {
-        switch (n) {
-            case 1:
-                return Sexe.Homme;
-            case 2:
-                return Sexe.Femme;
-            default:
-                throw new Error("Invalid number for Sexe");
-        }
-    }    
+        
+    
+    
     static fromJson(json: unknown): Patient {
         if (this.isValidPatientJson(json)) {
-            return new Patient(json.ID_Patient, json.Nom, json.Prenom, new Date(json.DateNaissance), this.numberToSexe(+json.sexe), json.Adresse, json.num_tel, json.email);
+            return new Patient(json.ID_Patient, json.Nom, json.Prenom, new Date(json.DateNaissance), numberToSexe(+json.sexe), json.Adresse, json.num_tel, json.email);
         } else {
             throw new Error("Invalid JSON structure for Patient");
-        }
-    }
-    static enumToNumber = (sexe: Sexe): number => {
-        switch (sexe) {
-            case Sexe.Homme:
-                return 1;
-            case Sexe.Femme:
-                return 2;
-            default:
-                throw new Error("Invalid Sexe");
         }
     }
     static toJson(patient: Patient): unknown {
         return {
             Nom: patient.nom,
             Prenom: patient.prenom,
-            sexe: this.enumToNumber(patient.sexe),
+            sexe: enumToNumber(patient.sexe),
             Adresse: patient.adresse,
             DateNaissance: patient.dateNaissance.toISOString().split('T')[0],
             num_tel: patient.numTel,
@@ -90,4 +73,25 @@ interface PatientJson {
 export enum Sexe {
     Homme = "Homme",
     Femme = "Femme"
+}
+export const enumToNumber = (sexe: Sexe): number => {
+    switch (sexe) {
+        case Sexe.Homme:
+            return 1;
+        case Sexe.Femme:
+            return 2;
+        default:
+            throw new Error("Invalid Sexe");
+    }
+}
+
+export const numberToSexe = (n: number): Sexe => {
+    switch (n) {
+        case 1:
+            return Sexe.Homme;
+        case 2:
+            return Sexe.Femme;
+        default:
+            throw new Error("Invalid number for Sexe");
+    }
 }

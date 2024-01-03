@@ -1,117 +1,120 @@
+import { useEffect, useState } from "react";
 import Tableau from "../../components/ts/Tableau";
-import { useEffect, useState} from "react";
-import { Patient } from "../../models/Patient";
+import { Person } from "../../models/Person";
 import { Button, Form, Modal } from "react-bootstrap";
+import { Doctor } from "../../models/Doctor";
 import axios from "axios";
 import { toast } from "react-toastify";
-import Fab from "@mui/material/Fab";
+import { Fab } from "@mui/material";
 import * as IoIcons from "react-icons/io";
-import { Person } from "../../models/Person";
 import Loading from "./Loading";
 
-export default function Patients() {
-  const [editingIndexRow, setEditingIndexRow] = useState(-1);
-  const [editingIndexColumn, setEditingIndexColumn] = useState(-1);
-  const [editingPatient, setEditingPatient] = useState<Person[]>([]);
-  const [patients, setPatients] = useState<Person[]>([]);
-  const [Sexe, setSexe] = useState(1);
-  const [show, setShow] = useState(false);
-  const [showWarning, setShowWarning] = useState(false);
-  const [id, setId] = useState(0);
-  const [isLoading, setIsLoading] = useState(true);
+export default function Doctors() {
+    const [editingIndexRow, setEditingIndexRow] = useState(-1);
+    const [editingIndexColumn, setEditingIndexColumn] = useState(-1);
+    const [editingPatient, setEditingPatient] = useState<Person[]>([]);
+    const [patients, setPatients] = useState<Person[]>([]);
+    const [Sexe, setSexe] = useState(1);
+    const [show, setShow] = useState(false);
+    const [showWarning, setShowWarning] = useState(false);
+    const [id, setId] = useState(0);
+    const [isLoading, setIsLoading] = useState(true);
+    const [specialite, setSpecialite] = useState(1);
 
+    const handleCloseWarning = () => setShowWarning(false);
+    const handleClose = () => setShow(false);
+    const handleShow = async () => {
+        setShow(true);
+        await getDoctors();
+    }
+    const handleSubmit = async (event: React.FormEvent) => {
+        event.preventDefault();
 
-  
-  const handleCloseWarning = () => setShowWarning(false);
-  const handleClose = () => setShow(false);
-  const handleShow = async () => {
-    setShow(true);
-    await getPatients();
-  }
-  const handleSubmit = async (event: React.FormEvent) => {
-    event.preventDefault();
+        const formData = new FormData(event.target as HTMLFormElement);
+        const data = Object.fromEntries(formData);
+        data.sexe = Sexe.toString();
+        data.specialite = specialite.toString();
+        const DateNaissance = new Date(data.DateNaissance.toString());
+        data.DateNaissance = DateNaissance.toISOString().split('T')[0];
+        console.log(JSON.stringify(data, null, 2));
+        const promise = axios.post("http://localhost:8000/api/Doctors/", data);
+        toast.promise(promise, {
+        pending: "Ajout en cours...",
+        success: {
+            render() {
+            return `Patient ajouté avec succès !`;
+            },
+        },
+        error: {
+            render() {
+            return `Erreur lors de l'ajout du patient !`;
+            },
+        },
+        });
+        const response = await promise;
+        console.log(response.data);
+    };
 
-    const formData = new FormData(event.target as HTMLFormElement);
-    const data = Object.fromEntries(formData);
-    data.sexe = Sexe.toString();
-    const DateNaissance = new Date(data.DateNaissance.toString());
-    data.DateNaissance = DateNaissance.toISOString().split('T')[0];
-    // console.log(JSON.stringify(data, null, 2));
-    const promise = axios.post("http://localhost:8000/api/patients/", data);
-    toast.promise(promise, {
-      pending: "Ajout en cours...",
-      success: {
-        render() {
-          return `Patient ajouté avec succès !`;
-        },
-      },
-      error: {
-        render() {
-          return `Erreur lors de l'ajout du patient !`;
-        },
-      },
-    });
-    const response = await promise;
-    console.log(response.data);
-  };
-  const editPatient = async (patients: Patient[]) => {
-    const promises = patients.map((patient) => {
-      return axios.put(
-        "http://localhost:8000/api/patients/" + patient.id + "/",
-        Patient.toJson(patient)
-      );
-    });
-    toast.promise(Promise.all(promises), {
-      pending: "Modification en cours...",
-      success: {
-        render() {
-          return `Modification effectuée avec succès !`;
-        },
-      },
-      error: {
-        render() {
-          return `Erreur lors de la modification du patient !`;
-        },
-      },
-    });
-    await Promise.all(promises);
-    await getPatients();
-  };
-  const getPatients = async () => {
-    const list: Patient[] = [];
-    const response = await axios.get("http://localhost:8000/api/patients/");
-    response.data.forEach((patient: unknown) => {
-      list.push(Patient.fromJson(patient));
-    });
-    setPatients(list);
-    setIsLoading(false);
-  };
+    const showDeleteModal = (index:number) => {
+        setShowWarning(true);
+        setId(index);
+      }
+    
+      const editDoctor = async (patients: Doctor[]) => {
+        const promises = patients.map((patient) => {
+          return axios.put(
+            "http://localhost:8000/api/Doctors/" + patient.ID_Medecin + "/",
+            Doctor.toJson(patient)
+          );
+        });
+        toast.promise(Promise.all(promises), {
+          pending: "Modification en cours...",
+          success: {
+            render() {
+              return `Modification effectuée avec succès !`;
+            },
+          },
+          error: {
+            render() {
+              return `Erreur lors de la modification du Medecin !`;
+            },
+          },
+        });
+        await Promise.all(promises);
+        await getDoctors();
+      };
+      const getDoctors = async () => {
+        const list: Doctor[] = [];
+        const response = await axios.get("http://localhost:8000/api/Doctors/");
+        response.data.forEach((doc: unknown) => {
+          list.push(Doctor.fromJson(doc));
+        });
+        setPatients(list);
+        setIsLoading(false);
+      };
+    
+      useEffect(() => {
+        getDoctors();
+      }, []);
+      const deleteDoctor = async (id: number) => {
+        const promise = axios.delete("http://localhost:8000/api/Doctors/" + id + "/");
+        toast.promise(promise, {
+          pending: "Suppression en cours...",
+          success: {
+            render() {
+              return `Patient supprimé avec succès !`;
+            },
+          },
+          error: {
+            render() {
+              return `Erreur lors de la suppression du patient !`;
+            },
+          },
+        });
+        await promise;
+        await getDoctors();
+      }
 
-  useEffect(() => {
-    getPatients();
-  }, []);
-  const deletePatient = async (id: number) => {
-    const promise = axios.delete("http://localhost:8000/api/patients/" + id + "/");
-    toast.promise(promise, {
-      pending: "Suppression en cours...",
-      success: {
-        render() {
-          return `Patient supprimé avec succès !`;
-        },
-      },
-      error: {
-        render() {
-          return `Erreur lors de la suppression du patient !`;
-        },
-      },
-    });
-    await promise;
-    await getPatients();
-  }
-  const showDeleteModal = (index:number) => {
-    setShowWarning(true);
-    setId(index);
-  }
   return (
     isLoading ? <Loading /> :
     <div className="table-container">
@@ -129,14 +132,14 @@ export default function Patients() {
       <div className="button-container">
         <Button
           variant="outline-primary"
-          onClick={() => editPatient(editingPatient as Patient[])}
+          onClick={() => editDoctor(editingPatient as Doctor[])}
         >
           Submit
         </Button>
         <Button
           variant="outline-primary"
           onClick={async () => {
-            await getPatients();
+            await getDoctors();
             setEditingIndexRow(-1);
             setEditingIndexColumn(-1);
             setEditingPatient([]);
@@ -164,7 +167,7 @@ export default function Patients() {
         </Button>
         <Button variant="danger" onClick={() => {
           handleCloseWarning();
-          deletePatient(id);
+          deleteDoctor(id);
         }}>
           Yes
         </Button>
@@ -179,7 +182,7 @@ export default function Patients() {
         <Modal.Body>
           <Form
             onSubmit={handleSubmit}
-            action="http://localhost:8000/api/patients/"
+            action="http://localhost:8000/api/Doctors/"
             id="myForm"
             method="post"
           >
@@ -217,6 +220,26 @@ export default function Patients() {
               >
                 <option value="1">Homme</option>
                 <option value="2">Femme</option>
+              </Form.Control>
+            </Form.Group>
+            <Form.Group controlId="specialite">
+              <Form.Label>specialite</Form.Label>
+              <Form.Control
+                value={specialite}
+                as="select"
+                name="specialite"
+                onChange={(e) => {
+                  const value = Number(e.target.value); // Convertit la valeur en nombre
+                  setSpecialite(value); // Met à jour l'état avec la nouvelle valeur
+                }}
+                required
+              >
+                <option value="1">Cardiologue</option>
+                <option value="2">Neurologue</option>
+                <option value="3">Urologue</option>
+                <option value="4">Rhumatologue</option>
+                <option value="5">ORL</option>
+                <option value="6">Generaliste</option>
               </Form.Control>
             </Form.Group>
             
