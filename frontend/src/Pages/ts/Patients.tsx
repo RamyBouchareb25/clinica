@@ -21,7 +21,7 @@ export default function Patients() {
   const [isLoading, setIsLoading] = useState(true);
 
 
-  
+
   const handleCloseWarning = () => setShowWarning(false);
   const handleClose = () => setShow(false);
   const handleShow = async () => {
@@ -146,7 +146,7 @@ export default function Patients() {
         </Button>
       </div>
 
-      <Fab color="primary" aria-label="add" onClick={handleShow}>
+      <Fab className="fab" color="primary" aria-label="add" onClick={handleShow}>
         <IoIcons.IoMdPersonAdd />
       </Fab>
 

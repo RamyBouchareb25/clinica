@@ -3,7 +3,8 @@ import Home from '../../Pages/ts/Home';
 import Patients from '../../Pages/ts/Patients';
 import Logout from '../../Pages/ts/Logout';
 import Doctors from '../../Pages/ts/Doctors';
-
+import Calendar from '../../Pages/ts/Calendar';
+import "../scss/page.scss";
 export default function Pages() {
 const location = useLocation();
   return (
@@ -12,6 +13,7 @@ const location = useLocation();
         <Route path='/patients' element={<Patients />} />
         <Route path='/doctors' element={<Doctors />} />
         <Route path='/logout' element={<Logout />} />
+        <Route path='/Calendar' element={<Calendar />} />
     </Routes>
   )
 }

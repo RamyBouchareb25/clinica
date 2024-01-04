@@ -36,7 +36,7 @@ export default function Doctors() {
         data.specialite = specialite.toString();
         const DateNaissance = new Date(data.DateNaissance.toString());
         data.DateNaissance = DateNaissance.toISOString().split('T')[0];
-        console.log(JSON.stringify(data, null, 2));
+        // console.log(JSON.stringify(data, null, 2));
         const promise = axios.post("http://localhost:8000/api/Doctors/", data);
         toast.promise(promise, {
         pending: "Ajout en cours...",
@@ -118,7 +118,7 @@ export default function Doctors() {
   return (
     isLoading ? <Loading /> :
     <div className="table-container">
-      <h2>Patients List :</h2>
+      <h2>Doctors List :</h2>
       <Tableau
         setShow={showDeleteModal}
         editingIndexRow={editingIndexRow}
@@ -149,7 +149,7 @@ export default function Doctors() {
         </Button>
       </div>
 
-      <Fab color="primary" aria-label="add" onClick={handleShow}>
+      <Fab className="fab" color="primary" aria-label="add" onClick={handleShow}>
         <IoIcons.IoMdPersonAdd />
       </Fab>
 

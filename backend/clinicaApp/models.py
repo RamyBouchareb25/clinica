@@ -37,14 +37,14 @@ class Medecin(models.Model):
     DateNaissance = models.DateField(default='2000-01-01')
     sexe = enum.EnumField(sexe)
     Adresse = models.CharField(max_length=(50))
-    num_tel = models.IntegerField()
-    email = models.EmailField()
+    num_tel = models.IntegerField(default=0)
+    email = models.EmailField(default="test@domain.com")
     specialite = enum.EnumField(Specialite)
 
 class Rendez_Vous(models.Model):
     ID_RDV = models.AutoField(primary_key=True)
-    Date = models.DateField
-    Heure = models.TimeField
+    Date = models.DateField(default='2000-01-01')
+    Heure = models.TimeField(default='00:00:00')
     Patient = models.ForeignKey(Patient,on_delete=models.CASCADE)
     Medecin = models.ForeignKey(Medecin,on_delete=models.CASCADE)
 
@@ -62,17 +62,17 @@ class DossierMedical(models.Model):
     
 class Salle_Consultation(models.Model):
     ID_Salle = models.AutoField(primary_key=True)
-    Numero_de_salle = models.IntegerField
-    Disponibilite = models.BooleanField
+    Numero_de_salle = models.IntegerField(default=0)
+    Disponibilite = models.BooleanField(default=False)
 
 class Calendrier(models.Model):
     ID_Calendrier = models.AutoField(primary_key=True)
     Medecin = models.ForeignKey(Medecin,on_delete=models.CASCADE)
     Salle_Consultation = models.ForeignKey(Salle_Consultation,on_delete=models.CASCADE)
-    HeureDebut = models.TimeField
-    HeureFin = models.TimeField
-    Date = models.DateField
-    Disponibilite = models.BooleanField
+    HeureDebut = models.TimeField(default='00:00:00')
+    HeureFin = models.TimeField(default='00:00:00')
+    Date = models.DateField(default='2000-01-01')
+    Disponibilite = models.BooleanField(default=False)
     
 class SuiviPostOperatoire(models.Model):
     ID_Suivi = models.AutoField(primary_key=True)

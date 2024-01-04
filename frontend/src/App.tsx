@@ -3,7 +3,7 @@ import './App.css'
 import Pages from './components/ts/Pages';
 import Sidebar from './components/ts/SideBar' 
 import { BrowserRouter as Router } from 'react-router-dom';
-import Login from './Pages/ts/Login';
+import LandingPage from './Pages/ts/LandingPage';
 import Loading from './Pages/ts/Loading';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -20,7 +20,7 @@ function App() {
     <Router>
       {isAuthenticated && <Sidebar />}
       <div className='app'>
-        {isAuthenticated ? <Pages /> : isLoading ? <Loading /> : <Login />}
+        {isAuthenticated ? <Pages /> : isLoading ? <Loading /> : <LandingPage />}
       </div>
     </Router>
     <ToastContainer
