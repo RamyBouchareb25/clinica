@@ -4,7 +4,8 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  font-family: 'Lato', sans-serif;
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+
 }
 
 .home,
@@ -19,6 +20,5 @@
   font-size: 3rem;
 }
 .app {
-  width: 82.6vw;
   margin-left: auto;
 }

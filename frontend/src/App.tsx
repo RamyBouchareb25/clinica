@@ -4,7 +4,7 @@ import Pages from './components/ts/Pages';
 import Sidebar from './components/ts/SideBar' 
 import { BrowserRouter as Router } from 'react-router-dom';
 import LandingPage from './Pages/ts/LandingPage';
-import Loading from './Pages/ts/Loading';
+import Loading from './components/ts/Loading';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import '@fontsource/roboto/300.css';
@@ -18,6 +18,16 @@ function App() {
   return (
     <>
     <Router>
+      <style type="text/css">
+        {`
+        .app {
+          width: ${isAuthenticated ? '82.6vw' : '100vw'};
+        }
+        body {
+          background-color: ${isAuthenticated ? 'white' : '#2B2B2B'};
+        }
+        `}
+      </style>
       {isAuthenticated && <Sidebar />}
       <div className='app'>
         {isAuthenticated ? <Pages /> : isLoading ? <Loading /> : <LandingPage />}

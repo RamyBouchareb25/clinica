@@ -7,7 +7,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { Fab } from "@mui/material";
 import * as IoIcons from "react-icons/io";
-import Loading from "./Loading";
+import Loading from "../../components/ts/Loading";
 
 export default function Doctors() {
     const [editingIndexRow, setEditingIndexRow] = useState(-1);

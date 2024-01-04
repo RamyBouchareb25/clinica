@@ -7,7 +7,7 @@ import { toast } from "react-toastify";
 import Fab from "@mui/material/Fab";
 import * as IoIcons from "react-icons/io";
 import { Person } from "../../models/Person";
-import Loading from "./Loading";
+import Loading from "../../components/ts/Loading";
 
 export default function Patients() {
   const [editingIndexRow, setEditingIndexRow] = useState(-1);
@@ -263,7 +263,7 @@ export default function Patients() {
         <Modal.Footer style={{ justifyContent: "flex-end" }}>
           <Button
             variant="secondary"
-            // onClick={handleClose}
+            onClick={handleClose}
             style={{ marginRight: "10px" }}
           >
             Close
