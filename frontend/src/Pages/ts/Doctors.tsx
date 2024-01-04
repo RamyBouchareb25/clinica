@@ -22,7 +22,8 @@ export default function Doctors() {
     const [specialite, setSpecialite] = useState(1);
 
     const handleCloseWarning = () => setShowWarning(false);
-    const handleClose = () => setShow(false);
+    const handleClose = () => setShow(false)
+
     const handleShow = async () => {
         setShow(true);
         await getDoctors();
@@ -51,8 +52,8 @@ export default function Doctors() {
             },
         },
         });
-        const response = await promise;
-        console.log(response.data);
+        await promise;
+        await getDoctors();
     };
 
     const showDeleteModal = (index:number) => {
@@ -286,7 +287,7 @@ export default function Doctors() {
         <Modal.Footer style={{ justifyContent: "flex-end" }}>
           <Button
             variant="secondary"
-            // onClick={handleClose}
+            onClick={handleClose}
             style={{ marginRight: "10px" }}
           >
             Close

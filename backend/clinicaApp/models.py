@@ -47,6 +47,10 @@ class Rendez_Vous(models.Model):
     Heure = models.TimeField(default='00:00:00')
     Patient = models.ForeignKey(Patient,on_delete=models.CASCADE)
     Medecin = models.ForeignKey(Medecin,on_delete=models.CASCADE)
+    service = enum.EnumField(Specialite)
+    def save(self, *args, **kwargs):
+        self.service = self.Medecin.specialite
+        super().save(*args, **kwargs)
 
 class Consultation (models.Model):
     ID_Consultation =models.AutoField(primary_key=True)

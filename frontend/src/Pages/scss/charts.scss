@@ -1,0 +1,24 @@
+.vertical-container {
+    width: 40vw;
+}
+.multi-container {
+    width: 40vw;
+}
+.radar-container {
+    width: 35vw;
+}
+.home-container {
+    display: flex;
+    flex-direction: column;
+}
+.container-1 {
+    width: 82.6vw;
+    display: flex;
+}
+.container-2 {
+    width: 82.6vw;
+    margin: auto;
+}
+.container-2 * {
+    margin: auto;
+}
