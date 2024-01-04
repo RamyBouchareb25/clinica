@@ -178,7 +178,7 @@ export default function Doctors() {
       {/* Modal for adding a patient */}
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>Add a Patient to the database :</Modal.Title>
+          <Modal.Title>Add a Doctor to the database :</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form

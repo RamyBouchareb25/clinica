@@ -7,7 +7,7 @@ import {SideBarInterface} from './SideBarInterface';
 import { useAuth0 } from '@auth0/auth0-react';
 import '../scss/NavBar.scss'
 import { useEffect, useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
 const Nav = styled.div`
   background: #15171c;
@@ -38,7 +38,7 @@ const SidebarWrap = styled.div`
 `;
 
 const Sidebar = () => {
-  const history = useHistory();
+  const location = useLocation();
 
   const {user} = useAuth0();
 
@@ -47,28 +47,23 @@ const Sidebar = () => {
   useEffect(() => {
     const handleResize = () => {
       const vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0);
+      console.log("client height" + document.documentElement.clientHeight)
+      console.log("inner height " + window.innerHeight)
       const bodyHeight = document.body.scrollHeight;
+      console.log(bodyHeight)
       if (bodyHeight < vh) {
-        setSidebarHeight(`100vh`);
+        setSidebarHeight(`calc(100vh - 5em)`);
       } else {
-        setSidebarHeight(`${bodyHeight}px`);
+        setSidebarHeight(`calc(${bodyHeight}px - 5em)`);
       }
     };
-  
-    history.listen(() => {
-      handleResize();
-    });
-    // Use a timeout to delay the execution of handleResize
-    // const intervalId = setInterval(() => {
-    //   handleResize();
-    // }, 1000);
-  
+    setTimeout(handleResize, 100);
     window.addEventListener('resize', handleResize);
   
     return () => {
       window.removeEventListener('resize', handleResize);
     };
-  }, [history]);
+  }, [location]);
 
 
   return (
