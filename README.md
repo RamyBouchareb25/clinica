@@ -11,10 +11,11 @@ This project represents an advanced management system tailored for a surgical cl
   - React with Vite
   - Bootstrap for styling
   - Sass for enhanced styling
-  -Auth0 for secure authentication
+  - Auth0 for secure authentication
   -Type Script for more robust code
+  - React Bootsrap for styled components
 
-  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/React-icon.svg/2300px-React-icon.svg.png" alt="react" width="10%"> <img src="https://vitejs.dev/logo-with-shadow.png" alt="vite" width="10%"> <img src="https://getbootstrap.com/docs/5.0/assets/brand/bootstrap-logo.svg" alt="Bootstrap" width="10%"> <img src="https://sass-lang.com/assets/img/styleguide/seal-color.png" alt="Sass" width="10%"> <img src="https://cdn.freebiesupply.com/logos/large/2x/auth0-logo-png-transparent.png" alt="Auth0" width="10%"> <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSxVoR1RTXjfthNkz2h5asySeOZIijCLDDI4Xth0JoW9w&s" alt="TypeScript" width="10%">
+  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/React-icon.svg/2300px-React-icon.svg.png" alt="react" width="10%"> <img src="https://vitejs.dev/logo-with-shadow.png" alt="vite" width="10%"> <img src="https://getbootstrap.com/docs/5.0/assets/brand/bootstrap-logo.svg" alt="Bootstrap" width="10%"> <img src="https://sass-lang.com/assets/img/styleguide/seal-color.png" alt="Sass" width="10%"> <img src="https://cdn.freebiesupply.com/logos/large/2x/auth0-logo-png-transparent.png" alt="Auth0" width="10%"> <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSxVoR1RTXjfthNkz2h5asySeOZIijCLDDI4Xth0JoW9w&s" alt="TypeScript" width="10%"> <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQLAfkRRnU5vmZJvedYJP3bqZ4ydbM9rh3mnLQjswjCVA&s" alt="React-bootstrap" width="10%">
 
 - **Backend:**
   - Django as the server
