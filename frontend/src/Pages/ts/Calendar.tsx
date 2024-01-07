@@ -5,20 +5,53 @@ import dayGridPlugin from '@fullcalendar/daygrid'
 import interactionPlugin from '@fullcalendar/interaction'
 import { XCircleFill } from 'react-bootstrap-icons';
 import {event} from '../../models/event';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Button, Modal } from 'react-bootstrap';
+import axios from 'axios';
+import { Patient } from '../../models/Patient';
+import { Doctor } from '../../models/Doctor';
+import { RendezVous, RendezVousJson } from '../../models/RendezVous';
+import { EventClickArg } from '@fullcalendar/common';
+
 export default function Calendar() {
 
 
-  const handleDateClick = (arg: any) => { // bind with an arrow function
+  const handleDateClick = (arg:EventClickArg) => { 
+    console.log(arg.event.id)
+    setSelectedRendezVous(rendezVous.find((rdv:RendezVous) => rdv.ID_RDV.toString() === arg.event.id))
     setShowDetails(true);
   }
-  const [passed, setPassed] = useState<boolean>(false);
   const [showDetails, setShowDetails] = useState<boolean>(false);
-  const [events, setEvents] = useState<event[]>([
-    { title: 'event 1', date: '2024-01-08' },
-    { title: 'event 2', date: '2023-10-10' },
-  ]);
+  const [rendezVous, setRendezVous] = useState<RendezVous[]>([]); 
+  const [selectedRendezVous, setSelectedRendezVous] = useState<RendezVous>();
+  const [events, setEvents] = useState<event[]>([]);
+
+  const getEvents = async () => {
+    const response = await axios.get('http://localhost:8000/api/RendezVous');
+    const promises = response.data.map( async (element: RendezVousJson) => {
+      const pat = (await axios.get('http://localhost:8000/api/patients/' + element.Patient + '/')).data
+      const patient:Patient = Patient.fromJson(pat)
+      const doc = (await axios.get('http://localhost:8000/api/Doctors/' + element.Medecin + '/')).data
+      const doctor:Doctor = Doctor.fromJson(doc)
+      const date = new Date(element.Date + 'T' + element.Heure)
+      return new RendezVous(element.ID_RDV, date, patient, doctor, element.passed,element.Titre, Doctor.numberToSpecialite(element.service));
+    });
+    const rdvList = await Promise.all(promises)
+    setRendezVous(rdvList);
+    const evs = rdvList.map((rdv:RendezVous) => {
+      return {
+        title: rdv.titre,
+        date: rdv.date.toISOString().split('T')[0],
+        id: rdv.ID_RDV.toString()
+      }
+    });
+    setEvents(evs);
+    // console.log(evs)
+  }
+
+  useEffect(() => {
+    getEvents();
+  }, []);
   const handleCloseDetails = () => setShowDetails(false);
   return (
     <div className='calendar-container'>
@@ -28,7 +61,7 @@ export default function Calendar() {
                     editable={true}
                     selectable={true}
                     initialView='dayGridMonth'
-                   eventClick={handleDateClick}
+                    eventClick={handleDateClick}
                     events={events}
                     height={550}
                   />
@@ -38,11 +71,13 @@ export default function Calendar() {
               <Modal.Title>Rendez vous</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-              <p><strong>Patient :</strong> {"patientName"}</p>
-              <p><strong>Doctor :</strong> {"doctorName"}</p>
-              <p><strong>Date :</strong> {"date"}</p>
-              <p><strong>Heure :</strong> {"hour"}</p>
-              <p><strong>Passed or not :</strong> <span style={{ color: passed ? 'green' : 'red' }}>{passed ? 'Yes' : 'No'}</span></p>
+              <p><strong>Titre :</strong> {selectedRendezVous?.titre}</p>
+              <p><strong>Service :</strong> {selectedRendezVous?.service}</p>
+              <p><strong>Patient :</strong> {selectedRendezVous?.patient.nom + " " + selectedRendezVous?.patient.prenom}</p>
+              <p><strong>Doctor :</strong> {selectedRendezVous?.doctor.Nom + " " + selectedRendezVous?.doctor.Prenom}</p>
+              <p><strong>Date :</strong> {selectedRendezVous?.date.toISOString().split("T")[0]}</p>
+              <p><strong>Heure :</strong> {selectedRendezVous?.date.toISOString().split("T")[1].split(".")[0]}</p>
+              <p><strong>Passed or not :</strong> <span style={{ color: selectedRendezVous?.passed ? 'green' : 'red' }}>{selectedRendezVous?.passed ? 'Yes' : 'No'}</span></p>
             </Modal.Body>
             <Modal.Footer>
               <Button variant="outline-secondary" onClick={handleCloseDetails}>

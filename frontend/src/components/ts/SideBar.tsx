@@ -47,10 +47,7 @@ const Sidebar = () => {
   useEffect(() => {
     const handleResize = () => {
       const vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0);
-      console.log("client height" + document.documentElement.clientHeight)
-      console.log("inner height " + window.innerHeight)
       const bodyHeight = document.body.scrollHeight;
-      console.log(bodyHeight)
       if (bodyHeight < vh) {
         setSidebarHeight(`calc(100vh - 5em)`);
       } else {

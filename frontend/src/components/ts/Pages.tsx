@@ -5,6 +5,7 @@ import Logout from '../../Pages/ts/Logout';
 import Doctors from '../../Pages/ts/Doctors';
 import Calendar from '../../Pages/ts/Calendar';
 import "../scss/page.scss";
+
 export default function Pages() {
 const location = useLocation();
   return (

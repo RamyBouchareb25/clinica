@@ -2,8 +2,8 @@ from django.db import models
 from django_enumfield import enum
 from django.utils import timezone
 from dateutil.relativedelta import relativedelta
+from django.core.exceptions import ValidationError
 from datetime import datetime
-
 # Create your models here.
 class sexe(enum.Enum):
     Homme = 1
@@ -40,6 +40,31 @@ class Medecin(models.Model):
     num_tel = models.IntegerField(default=0)
     email = models.EmailField(default="test@domain.com")
     specialite = enum.EnumField(Specialite)
+    
+class Salle_Consultation(models.Model):
+    ID_Salle = models.AutoField(primary_key=True)
+    Numero_de_salle = models.IntegerField(default=0)
+    Disponibilite = models.BooleanField(default=False)
+
+class Consultation (models.Model):
+    ID_Consultation =models.AutoField(primary_key=True)
+    estPasser = models.BooleanField(default=False)
+    salle = models.ForeignKey(Salle_Consultation,on_delete=models.CASCADE,null=True)
+    Diagnostic = models.CharField(max_length=(50))
+    Traitement = models.CharField(max_length=(50))
+    commentaire = models.CharField(max_length=(50))
+
+class Salle_Operation(models.Model):
+    ID_Salle = models.AutoField(primary_key=True)
+    Numero_de_salle = models.IntegerField(default=0)
+    Disponibilite = models.BooleanField(default=False)
+
+class Operation(models.Model):
+    ID_Operation = models.AutoField(primary_key=True)
+    estPasser = models.BooleanField(default=False)
+    Type = models.CharField(max_length=200)
+    salle = models.ForeignKey(Salle_Operation, on_delete=models.CASCADE)
+    
 
 class Rendez_Vous(models.Model):
     ID_RDV = models.AutoField(primary_key=True)
@@ -48,39 +73,32 @@ class Rendez_Vous(models.Model):
     Patient = models.ForeignKey(Patient,on_delete=models.CASCADE)
     Medecin = models.ForeignKey(Medecin,on_delete=models.CASCADE)
     service = enum.EnumField(Specialite)
+    Titre = models.CharField(max_length=(50),default="Consultation")
+    consultation = models.ForeignKey(Consultation,on_delete=models.CASCADE,null=True,blank=True)
+    operation = models.ForeignKey(Operation,on_delete=models.CASCADE,null=True,blank=True)
+
     def save(self, *args, **kwargs):
         self.service = self.Medecin.specialite
+        if self.consultation and self.operation:
+            raise ValidationError("Un rendez-vous ne peut pas avoir à la fois une consultation et une opération.")
+        if not self.consultation and not self.operation:
+            raise ValidationError("Un rendez-vous doit avoir soit une consultation soit une opération.")
         super().save(*args, **kwargs)
 
-class Consultation (models.Model):
-    ID_Consultation =models.AutoField(primary_key=True)
-    Rendez_Vous = models.ForeignKey(Rendez_Vous,on_delete=models.CASCADE)
-    Diagnostic = models.CharField(max_length=(50))
-    Traitement = models.CharField(max_length=(50))
-    commentaire = models.CharField(max_length=(50))
+class Medicament(models.Model):
+    ID_Medicament = models.AutoField(primary_key=True)
+    Nom = models.CharField(max_length=200)
+    Description = models.TextField(blank=True)
+    Dosage = models.CharField(max_length=100, blank=True)
     
 class DossierMedical(models.Model):
     ID_Dossier = models.AutoField(primary_key=True)
-    Patient = models.ForeignKey(Patient,on_delete=models.CASCADE)
-    Consultation = models.ForeignKey(Consultation,on_delete=models.CASCADE)
+    Patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
+    DateCreation = models.DateField(auto_now_add=True, null=True, blank=True)
+    Antecedents = models.TextField(blank=True)
+    Allergies = models.TextField(blank=True)
+    Medicaments = models.ManyToManyField(Medicament, blank=True)
+    Consultations = models.ManyToManyField(Consultation, blank=True)
+    Operations = models.ManyToManyField(Operation, blank=True)
     
-class Salle_Consultation(models.Model):
-    ID_Salle = models.AutoField(primary_key=True)
-    Numero_de_salle = models.IntegerField(default=0)
-    Disponibilite = models.BooleanField(default=False)
 
-class Calendrier(models.Model):
-    ID_Calendrier = models.AutoField(primary_key=True)
-    Medecin = models.ForeignKey(Medecin,on_delete=models.CASCADE)
-    Salle_Consultation = models.ForeignKey(Salle_Consultation,on_delete=models.CASCADE)
-    HeureDebut = models.TimeField(default='00:00:00')
-    HeureFin = models.TimeField(default='00:00:00')
-    Date = models.DateField(default='2000-01-01')
-    Disponibilite = models.BooleanField(default=False)
-    
-class SuiviPostOperatoire(models.Model):
-    ID_Suivi = models.AutoField(primary_key=True)
-    Patient = models.ForeignKey(Patient,on_delete=models.CASCADE)
-    Medecin = models.ForeignKey(Medecin,on_delete=models.CASCADE)
-    Evolution = models.CharField(max_length=(50))
-    Recommandation = models.CharField(max_length=(50))

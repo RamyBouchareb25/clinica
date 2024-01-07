@@ -22,10 +22,10 @@ from clinicaApp import views
 router = routers.DefaultRouter()
 router.register(r'patients', views.PatientView, 'paitent')
 router.register(r'Doctors', views.DoctorView, 'Doctors')
-
+router.register(r'RendezVous', views.RendezVousView, 'RendezVous')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('clinicaApp.urls')),
+    # path('', include('clinicaApp.urls')),
     path('api/', include(router.urls))
 ]

@@ -103,7 +103,7 @@ export default function Doctors() {
           pending: "Suppression en cours...",
           success: {
             render() {
-              return `Patient supprimé avec succès !`;
+              return `Medecin supprimé avec succès !`;
             },
           },
           error: {
