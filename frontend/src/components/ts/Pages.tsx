@@ -4,7 +4,9 @@ import Patients from '../../Pages/ts/Patients';
 import Logout from '../../Pages/ts/Logout';
 import Doctors from '../../Pages/ts/Doctors';
 import Calendar from '../../Pages/ts/Calendar';
-import "../scss/page.scss";
+
+import DossierMedicale from "../../Pages/ts/DossierMedicale"
+import "../scss/pages.scss";
 
 export default function Pages() {
 const location = useLocation();
@@ -13,6 +15,8 @@ const location = useLocation();
         <Route path='/' element={<Home />} />
         <Route path='/patients' element={<Patients />} />
         <Route path='/doctors' element={<Doctors />} />
+        <Route path='/MedicalRecords' element={<DossierMedicale />} />
+        <Route path='/settings' element={<Home />} />
         <Route path='/logout' element={<Logout />} />
         <Route path='/Calendar' element={<Calendar />} />
     </Routes>

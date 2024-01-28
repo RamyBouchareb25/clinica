@@ -32,3 +32,22 @@ export interface RendezVousJson {
     passed: boolean;
     service: number;
 }
+
+export const specialiteToService = (spec: specialite): string => {
+    switch (spec) {
+        case specialite.Cardiologue:
+            return "Cardiologie";
+        case specialite.Neurologue:
+            return "Neurologie";
+        case specialite.Urologue:
+            return "Urologie";
+        case specialite.Rhumatologue:
+            return "Rhumatologie";
+        case specialite.ORL:
+            return "ORL";
+        case specialite.Generaliste:
+            return "Generaliste";
+        default:
+            throw new Error("Invalid specialite");
+    }
+}

@@ -40,13 +40,13 @@ const DropdownLink = styled(Link)`
   }
 `;
 
-const SubMenu = ({ item } : {item : SideBarInterface}) => {
+const SubMenu = ({ item, id } : {item : SideBarInterface, id:string}) => {
   const [subnav, setSubnav] = useState(false);
 
   const showSubnav = () => setSubnav(!subnav);
 
   return (
-    <>
+    <div id={id}>
       <SidebarLink to={item.path} onClick={item.subNav && showSubnav}>
         <div>
           {item.icon}
@@ -69,7 +69,7 @@ const SubMenu = ({ item } : {item : SideBarInterface}) => {
             </DropdownLink>
           );
         })}
-    </>
+    </div>
   );
 };
 

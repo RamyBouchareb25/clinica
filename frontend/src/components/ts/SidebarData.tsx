@@ -32,9 +32,9 @@ export const SidebarData = [
     icon: <IoIcons.IoMdCalendar />
   },
   {
-    title: 'Rendez-Vous',
-    path: '/rendez-vous',
-    icon: <IoIcons.IoMdCheckmark />
+    title: 'Dossiers Médicaux',
+    path: '/MedicalRecords',
+    icon: <IoIcons.IoMdFolder />
   },
   {
     title: 'Settings',

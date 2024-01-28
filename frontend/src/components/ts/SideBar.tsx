@@ -54,7 +54,7 @@ const Sidebar = () => {
         setSidebarHeight(`calc(${bodyHeight}px - 5em)`);
       }
     };
-    setTimeout(handleResize, 100);
+    setInterval(handleResize, 100);
     window.addEventListener('resize', handleResize);
   
     return () => {
@@ -78,7 +78,7 @@ const Sidebar = () => {
         <SidebarNav height={sidebarHeight}>
           <SidebarWrap>
             {SidebarData.map((item, index:number) => {
-              return <SubMenu item={item as SideBarInterface} key={index} />;
+              return <SubMenu id={item.title} item={item as SideBarInterface} key={index} />;
             })}
           </SidebarWrap>
         </SidebarNav>

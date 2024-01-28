@@ -60,7 +60,7 @@ export class Patient {
                'email' in json && typeof json['email'] === 'string';
     }
 }
-interface PatientJson {
+export interface PatientJson {
     ID_Patient: number;
     Nom: string;
     Prenom: string;

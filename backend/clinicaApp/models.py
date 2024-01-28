@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models import Count, Q
 from django_enumfield import enum
 from django.utils import timezone
 from dateutil.relativedelta import relativedelta
@@ -46,6 +47,35 @@ class Salle_Consultation(models.Model):
     Numero_de_salle = models.IntegerField(default=0)
     Disponibilite = models.BooleanField(default=False)
 
+
+class Salle_Operation(models.Model):
+    ID_Salle = models.AutoField(primary_key=True)
+    Numero_de_salle = models.IntegerField(default=0)
+    Disponibilite = models.BooleanField(default=False)
+
+class Medicament(models.Model):
+    ID_Medicament = models.AutoField(primary_key=True)
+    Nom = models.CharField(max_length=200)
+    Description = models.TextField(blank=True)
+    Dosage = models.CharField(max_length=100, blank=True)
+    
+class DossierMedical(models.Model):
+    ID_Dossier = models.AutoField(primary_key=True)
+    Patient = models.OneToOneField(Patient, on_delete=models.CASCADE,null=True)
+    DateCreation = models.DateField(auto_now_add=True, null=True, blank=True)
+    Antecedents = models.TextField(blank=True)
+    Allergies = models.TextField(blank=True)
+    Medicaments = models.ManyToManyField(Medicament, blank=True)
+
+    
+class Operation(models.Model):
+    ID_Operation = models.AutoField(primary_key=True)
+    estPasser = models.BooleanField(default=False)
+    Type = models.CharField(max_length=200)
+    salle = models.ForeignKey(Salle_Operation, on_delete=models.CASCADE)
+    dossier_medical = models.ForeignKey(DossierMedical, on_delete=models.CASCADE, null=True, blank=True)
+    remission = models.BooleanField(default=False)
+    
 class Consultation (models.Model):
     ID_Consultation =models.AutoField(primary_key=True)
     estPasser = models.BooleanField(default=False)
@@ -53,18 +83,8 @@ class Consultation (models.Model):
     Diagnostic = models.CharField(max_length=(50))
     Traitement = models.CharField(max_length=(50))
     commentaire = models.CharField(max_length=(50))
-
-class Salle_Operation(models.Model):
-    ID_Salle = models.AutoField(primary_key=True)
-    Numero_de_salle = models.IntegerField(default=0)
-    Disponibilite = models.BooleanField(default=False)
-
-class Operation(models.Model):
-    ID_Operation = models.AutoField(primary_key=True)
-    estPasser = models.BooleanField(default=False)
-    Type = models.CharField(max_length=200)
-    salle = models.ForeignKey(Salle_Operation, on_delete=models.CASCADE)
-    
+    dossier_medical = models.ForeignKey(DossierMedical, on_delete=models.CASCADE, null=True, blank=True)
+    remission = models.BooleanField(default=False)
 
 class Rendez_Vous(models.Model):
     ID_RDV = models.AutoField(primary_key=True)
@@ -85,20 +105,28 @@ class Rendez_Vous(models.Model):
             raise ValidationError("Un rendez-vous doit avoir soit une consultation soit une opération.")
         super().save(*args, **kwargs)
 
-class Medicament(models.Model):
-    ID_Medicament = models.AutoField(primary_key=True)
-    Nom = models.CharField(max_length=200)
-    Description = models.TextField(blank=True)
-    Dosage = models.CharField(max_length=100, blank=True)
-    
-class DossierMedical(models.Model):
-    ID_Dossier = models.AutoField(primary_key=True)
-    Patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
-    DateCreation = models.DateField(auto_now_add=True, null=True, blank=True)
-    Antecedents = models.TextField(blank=True)
-    Allergies = models.TextField(blank=True)
-    Medicaments = models.ManyToManyField(Medicament, blank=True)
-    Consultations = models.ManyToManyField(Consultation, blank=True)
-    Operations = models.ManyToManyField(Operation, blank=True)
-    
 
+
+# class PatientStats(models.Model):
+#     department = enum.EnumField(Specialite)
+#     patient_count = models.IntegerField()
+
+#     @classmethod
+#     def update_stats(cls):
+#         from .models import Rendez_Vous  # Import here to avoid circular import
+#         stats = Rendez_Vous.objects.values('service').annotate(patient_count=Count('Patient', distinct=True))
+#         cls.objects.all().delete()
+#         cls.objects.bulk_create([cls(specialite=stat['service'], patient_count=stat['patient_count']) for stat in stats])
+
+# class RemissionStats(models.Model):
+#     month = models.DateField()
+#     remission_count = models.IntegerField()
+
+#     @classmethod
+#     def update_stats(cls):
+#         from .models import Consultation, Operation  # Import here to avoid circular import
+#         month_start = timezone.now().replace(day=1, hour=0, minute=0, second=0, microsecond=0)
+#         remissions = (Consultation.objects.filter(remission=True, date__gte=month_start) |
+#                       Operation.objects.filter(remission=True, date__gte=month_start))
+#         cls.objects.filter(month=month_start).delete()
+#         cls.objects.create(month=month_start, remission_count=remissions.count())
